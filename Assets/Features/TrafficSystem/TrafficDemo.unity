@@ -351,6 +351,9 @@ MonoBehaviour:
   laneWidth: 5
   initialTurnaround: 0.5
   animationDuration: 1.5
+  timeOnStartSlowingDown: 0.8
+  timeToStartSwitchingLane: 0.2
+  timeToFinishSwitchingLane: 0.8
 --- !u!1 &596571804
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,6 +407,7 @@ MonoBehaviour:
   OffsetScale: 0
   Direction: {x: 0, y: 0, z: 0}
   Perpendicular: {x: 0, y: 0, z: 0}
+  Distance: 0
 --- !u!1 &647662820
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,7 +592,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!81 &806641063
 AudioListener:
   m_ObjectHideFlags: 0
@@ -969,7 +973,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1760560033
 MonoBehaviour:
   m_ObjectHideFlags: 0

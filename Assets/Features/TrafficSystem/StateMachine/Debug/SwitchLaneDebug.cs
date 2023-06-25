@@ -14,6 +14,10 @@ public class SwitchLaneDebug : MonoBehaviour
     [SerializeField] [Range(0f, 1f)] private float initialTurnaround = 0.2f;
     [SerializeField] private float animationDuration = 1.5f;
 
+    [SerializeField] [Range(0f, 1f)] private float timeOnStartSlowingDown = 0.8f;
+    [SerializeField] [Range(0f, 1f)] private float timeToStartSwitchingLane = 0.2f;
+    [SerializeField] [Range(0f, 1f)] private float timeToFinishSwitchingLane = 0.8f;
+
     private void Update() {
         if (Input.GetKeyDown(KeyCode.L)) {
             Debug.Log("L pressed");
@@ -24,11 +28,13 @@ public class SwitchLaneDebug : MonoBehaviour
         }
     }
 
+
+
     private IEnumerator StartAnim() {
         Debug.Log("StartAnim");
+        
         while (true) {
             lerp_t += Time.deltaTime / animationDuration;
-            
 
             if (lerp_t >= 1f) {
                 transform.position = startPosition;
@@ -51,8 +57,13 @@ public class SwitchLaneDebug : MonoBehaviour
                 );
             }
             
-            float currentSpeed = Mathf.Lerp(speed, 0, lerp_t);
-            transform.position += transform.forward * currentSpeed * Time.deltaTime;
+            if (lerp_t >= timeOnStartSlowingDown) {
+                float currentSpeed = Mathf.Lerp(speed, 0, (lerp_t - timeOnStartSlowingDown) * 1 / (1 - timeOnStartSlowingDown));
+                transform.position += transform.forward * currentSpeed * Time.deltaTime;
+            } else {
+                transform.position += transform.forward * speed * Time.deltaTime;
+            }
+
             yield return new WaitForFixedUpdate();
         }
     }

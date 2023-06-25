@@ -6,7 +6,6 @@ using UnityEngine;
 public class VehicleMoving : BaseState<VehicleSTM>
 {
     #region variables
-    private float pathDistance;
     private Vector3 startingMapPoint;
     private Vector3 targetMapPoint;
     #endregion
@@ -19,8 +18,6 @@ public class VehicleMoving : BaseState<VehicleSTM>
         int laneNumber = stm.LaneNumber;
         MapConnection path = stm.ActivePath;
         Transform transform = stm.transform;
-
-        pathDistance = Vector3.Distance(stm.ActivePath.StartPosition.position, stm.ActivePath.TargetPosition.position);
         
         // convert lane number to offset scale
         float offsetScale = -1f * path.OffsetScale;
@@ -40,7 +37,7 @@ public class VehicleMoving : BaseState<VehicleSTM>
 
     public override void OnUpdate(VehicleSTM stm)
     {
-        stm.Lerp_t += Time.deltaTime * stm.Speed / pathDistance;
+        stm.Lerp_t += Time.deltaTime * stm.Speed / stm.ActivePath.Distance;
         stm.transform.position += stm.ActivePath.Direction * Time.deltaTime * stm.Speed;
 
         CheckTransition(stm);
@@ -48,7 +45,7 @@ public class VehicleMoving : BaseState<VehicleSTM>
 
     public override void OnExit(VehicleSTM stm)
     {
-        Debug.Log("VehicleMoving.OnExit");
+        //nothing
     }
 
     private void CheckTransition(VehicleSTM stm) {
@@ -61,38 +58,38 @@ public class VehicleMoving : BaseState<VehicleSTM>
         // check vehicle in front
         LayerMask layerMask = LayerMask.GetMask("Vehicle");
 
-        bool vehicleAhead = Physics.Raycast(raycastOrigin, raycastDirection, stm.FrontDetectionRange);
+        bool vehicleAhead = Physics.Raycast(raycastOrigin, raycastDirection, stm.FrontDetectionRange, layerMask);
         if (vehicleAhead) {
             // check if lane switch is possible
 
             // check left lane
-            bool leftLaneAvailable = stm.LaneNumber > 0;
-            if (leftLaneAvailable) {
-                Vector3 leftRaycastOrigin = raycastOrigin + stm.ActivePath.Perpendicular * -1f * stm.ActivePath.LaneWidth;
-                bool canSwitchToLeft = !Physics.Raycast(leftRaycastOrigin, raycastDirection, stm.FrontDetectionRange, layerMask);
-                if (canSwitchToLeft) {
-                    Debug.Log("Switch To Left"); // harusnya pindah state
-                    stm.LaneNumber -= 1; 
-                    stm.transform.position += stm.ActivePath.Perpendicular * -1f * stm.ActivePath.LaneWidth;
-                    return;
-                }
-            }
+            // bool leftLaneAvailable = stm.LaneNumber > 0;
+            // if (leftLaneAvailable) {
+            //     Vector3 leftRaycastOrigin = raycastOrigin + stm.ActivePath.Perpendicular * -1f * stm.ActivePath.LaneWidth;
+            //     bool canSwitchToLeft = !Physics.Raycast(leftRaycastOrigin, raycastDirection, stm.FrontDetectionRange, layerMask);
+            //     if (canSwitchToLeft) {
+            //         Debug.Log("Switch To Left"); // harusnya pindah state
+            //         stm.LaneNumber -= 1; 
+            //         stm.transform.position += stm.ActivePath.Perpendicular * -1f * stm.ActivePath.LaneWidth;
+            //         return;
+            //     }
+            // }
 
-            // check right lane
-            bool rightLaneAvailable = stm.LaneNumber < stm.ActivePath.NumberOfLanes - 1;
-            if (rightLaneAvailable) {
-                Vector3 rightRaycastOrigin = raycastOrigin + stm.ActivePath.Perpendicular * 1f * stm.ActivePath.LaneWidth;
-                bool canSwitchToRight = !Physics.Raycast(rightRaycastOrigin, raycastDirection, stm.FrontDetectionRange, layerMask);
-                if (canSwitchToRight) {
-                    Debug.Log("Switch To Right"); // harusnya pindah state
-                    stm.LaneNumber += 1;
-                    stm.transform.position += stm.ActivePath.Perpendicular * 1f * stm.ActivePath.LaneWidth;
-                    return;
-                }
-            }
+            // // check right lane
+            // bool rightLaneAvailable = stm.LaneNumber < stm.ActivePath.NumberOfLanes - 1;
+            // if (rightLaneAvailable) {
+            //     Vector3 rightRaycastOrigin = raycastOrigin + stm.ActivePath.Perpendicular * 1f * stm.ActivePath.LaneWidth;
+            //     bool canSwitchToRight = !Physics.Raycast(rightRaycastOrigin, raycastDirection, stm.FrontDetectionRange, layerMask);
+            //     if (canSwitchToRight) {
+            //         Debug.Log("Switch To Right"); // harusnya pindah state
+            //         stm.LaneNumber += 1;
+            //         stm.transform.position += stm.ActivePath.Perpendicular * 1f * stm.ActivePath.LaneWidth;
+            //         return;
+            //     }
+            // }
 
             // can't switch lane, stop
-            stm.Speed = 0f; // harusnya pindah state
+            stm.ChangeState("VehicleStopping");
             return;
         }
         #endregion        

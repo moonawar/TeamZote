@@ -14,6 +14,7 @@ public class MapConnection : MonoBehaviour
     [HideInInspector] public float OffsetScale;
     [HideInInspector] public Vector3 Direction;
     [HideInInspector] public Vector3 Perpendicular;
+    [HideInInspector] public float Distance;
 
     private void Awake() {
         if (StartPosition == null || TargetPosition == null) {
@@ -22,6 +23,7 @@ public class MapConnection : MonoBehaviour
 
         OffsetScale = (NumberOfLanes - 1) / 2f;
         Direction = (TargetPosition.position - StartPosition.position).normalized;
+        Distance = Vector3.Distance(StartPosition.position, TargetPosition.position);
         Perpendicular = Vector3.Cross(Direction, Vector3.up);
     }
 

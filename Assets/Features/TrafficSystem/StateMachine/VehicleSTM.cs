@@ -9,6 +9,7 @@ public class VehicleSTM : BaseStateMachine<VehicleSTM>
     public float Speed = 1f;
 
     [Tooltip("Distance from the front of the vehicle to the point where the vehicle starts to slow down")]
+    [HideInInspector]
     public float FrontDetectionRange = 5f;
 
     [Tooltip("Distance from the front obstacle where the vehicle stops")]
@@ -32,7 +33,9 @@ public class VehicleSTM : BaseStateMachine<VehicleSTM>
     override protected void Start() {
         /**
             Subtituted by StartVehicle() method, called by VehicleSpawner
+            init variables only
         */
+        FrontDetectionRange = Speed * 0.8f;
     }
 
     public void StartVehicle(MapConnection path, int laneNumber) {
