@@ -10,6 +10,7 @@ public class MapConnection : MonoBehaviour
     public int NumberOfLanes = 2;
     public float LaneWidth = 1.5f;
     public Color32 LineColor = Color.white;
+    public Color32 SelectedColor = Color.green;
 
     [HideInInspector] public float OffsetScale;
     [HideInInspector] public Vector3 Direction;
@@ -28,7 +29,7 @@ public class MapConnection : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    public void DrawConnection() {
+    public void DrawConnection(bool selected = false) {
         if (StartPosition == null || TargetPosition == null) {
             return;
         }
@@ -39,9 +40,17 @@ public class MapConnection : MonoBehaviour
 
         for (float s = -1f * offsetScale; s <= offsetScale; s++) {
             Vector3 offset = perpendicular * s * LaneWidth;
-            Gizmos.color = LineColor;
+            Gizmos.color = selected ? SelectedColor : LineColor;
             Gizmos.DrawLine(StartPosition.position + offset, TargetPosition.position + offset);
         }
+    }
+
+    private void OnDrawGizmos() {
+        DrawConnection();
+    }
+
+    private void OnDrawGizmosSelected() {
+        DrawConnection(true);
     }
 #endif
 }

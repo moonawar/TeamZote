@@ -26,7 +26,7 @@ public class VehicleSpawner : MonoBehaviour
         Random.InitState(System.DateTime.Now.Millisecond);
         int laneNumber = Random.Range(0, path.NumberOfLanes);
         
-        vehicleSTM.StartVehicle(path, 0);
+        vehicleSTM.StartVehicle(path, laneNumber);
     }
 
     private void Update() {
