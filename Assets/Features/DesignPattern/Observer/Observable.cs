@@ -37,9 +37,4 @@ public class Observable<T>
     {
         OnValueChanged = null;
     }
-
-    public static implicit operator T(Observable<T> observable)
-    {
-        return observable.Value;
-    }
 }

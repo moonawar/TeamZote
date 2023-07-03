@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1126455635579654075}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0.75}
   m_LocalScale: {x: 1, y: 1, z: 2}
   m_Children: []
   m_Father: {fileID: 1126455636466237146}
@@ -121,7 +121,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1126455636466237147}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.75}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1126455635579654055}
@@ -197,10 +197,15 @@ MonoBehaviour:
     State: {fileID: 11400000, guid: d93bf25e221e2104fa2cd103b27c9f63, type: 2}
   - Name: VehicleStopping
     State: {fileID: 11400000, guid: ef3cb58c570a57b449166f1db7d4b57f, type: 2}
-  Speed: 15
-  FrontDetectionRange: 9.6
+  - Name: VehicleSwitchLane
+    State: {fileID: 11400000, guid: a9ec926b659401c4c84af61ae0c28dbe, type: 2}
+  TopSpeed: 8
+  AccelerationTime: 1.2
   StopAtDistance: 1.3
+  TurnAngle: 30
+  FrontDetectionRange: 8
+  CurrentSpeed: 0
+  TurnDirection: 0
   VehicleBound: {fileID: 1126455635579654074}
   ActivePath: {fileID: 0}
   LaneNumber: 0
-  Lerp_t: 0
