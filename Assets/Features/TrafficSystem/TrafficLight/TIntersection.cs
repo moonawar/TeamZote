@@ -11,16 +11,18 @@ public class LaneTrafficState {
     public float timeRemaining;
     public bool allowedToTurnLeft = true;
     public Action OnTrafficLightGreen;
+    public List<LaneConnection> laneConnections;
 }
 
-public enum TLColor {
-    Red,
-    Yellow,
-    Green
+[System.Serializable]
+public class LaneConnection {
+    public TurnDirection direction;
+    public MapConnection lane;
 }
 
 public class TIntersection : MonoBehaviour
 {
+    [Tooltip("List of lanes in the intersection, please order them in circular order")]
     [SerializeField] private List<LaneTrafficState> lanes;
     private int currentLaneIndex = 0; // the index of the lane that is currently green
     private LaneTrafficState activeLane; // the lane that is currently green
@@ -69,4 +71,17 @@ public class TIntersection : MonoBehaviour
         activeLane.OnTrafficLightGreen?.Invoke();
         activeLane.timeRemaining = activeLane.laneTrafficData.GreenLight.duration;
     }
+
+    public MapConnection GetNextLane(MapConnection lane, TurnDirection direction) {
+        LaneTrafficState laneTrafficState = GetLaneTrafficState(lane);
+        if (laneTrafficState == null) {
+            return null;
+        }
+        LaneConnection laneConnection = laneTrafficState.laneConnections.Find(l => l.direction == direction);
+        if (laneConnection == null) {
+            return null;
+        }
+        return laneConnection.lane;
+    }
+
 }

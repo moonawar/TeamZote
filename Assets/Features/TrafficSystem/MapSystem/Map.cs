@@ -6,7 +6,7 @@ using UnityEngine;
 public class Map : MonoBehaviour
 {
     [SerializeField] private Transform connectionsParent;
-    [SerializeField] private bool drawGizmos = true;
+    public bool drawGizmos = true;
 
     // private void OnDrawGizmos() {
     //     if (!drawGizmos) return;

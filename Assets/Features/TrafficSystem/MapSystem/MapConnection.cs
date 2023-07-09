@@ -28,6 +28,26 @@ public class MapConnection : MonoBehaviour
         Perpendicular = Vector3.Cross(Direction, Vector3.up);
     }
 
+    public Vector3 GetLaneStartingPoint(int laneNumber) {
+        float offsetScale = -1f * OffsetScale;
+        for (int i = 0; i < laneNumber; i++) {
+            offsetScale += 1;
+        }
+
+        Vector3 offset = Perpendicular * offsetScale * LaneWidth;
+        return StartPosition.position + offset;
+    }
+
+    public Vector3 GetLaneTargetPoint(int laneNumber) {
+        float offsetScale = -1f * OffsetScale;
+        for (int i = 0; i < laneNumber; i++) {
+            offsetScale += 1;
+        }
+
+        Vector3 offset = Perpendicular * offsetScale * LaneWidth;
+        return TargetPosition.position + offset;
+    }
+
 #if UNITY_EDITOR
     public void DrawConnection(bool selected = false) {
         if (StartPosition == null || TargetPosition == null) {
@@ -46,7 +66,7 @@ public class MapConnection : MonoBehaviour
     }
 
     private void OnDrawGizmos() {
-        DrawConnection();
+        if (Object.FindObjectOfType<Map>().drawGizmos) DrawConnection();
     }
 
     private void OnDrawGizmosSelected() {

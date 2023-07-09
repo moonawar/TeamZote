@@ -1,42 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+/* =============== ARCHIVED =============== */
 
-[CreateAssetMenu(fileName = "VehicleTrafficLight", menuName = "TrafficSystem/States/VehicleTrafficLight")]
-public class VehicleTrafficLight : BaseState<VehicleSTM>
-{
-    private TIntersection trafficIntersection;
-    private LaneTrafficState laneTrafficState;
-    private VehicleSTM stm;
-    public override void OnEnter(VehicleSTM stm)
-    {
-        Vector3 raycastOrigin = stm.VehicleBound.bounds.center + stm.VehicleBound.bounds.extents.x * stm.transform.forward;
-        Vector3 raycastDirection = stm.transform.forward; 
+// using System.Collections;
+// using System.Collections.Generic;
+// using UnityEngine;
 
-        RaycastHit hitInfo;
-        LayerMask layerMask = LayerMask.GetMask(new string[] {"TrafficIntersection"});
-        Physics.Raycast(raycastOrigin, raycastDirection, out hitInfo, stm.FrontDetectionRange, layerMask);   
-        trafficIntersection = hitInfo.collider.GetComponent<TIntersection>();
+// [CreateAssetMenu(fileName = "VehicleTrafficLight", menuName = "TrafficSystem/States/VehicleTrafficLight")]
+// public class VehicleTrafficLight : BaseState<VehicleSTM>
+// {
+//     private TIntersection trafficIntersection;
+//     private LaneTrafficState laneTrafficState;
+//     private VehicleSTM stm;
+//     public override void OnEnter(VehicleSTM stm)
+//     {
+//         Debug.Log("Vehicle(" + stm.GetHashCode() + ") is waiting for traffic light to turn green");
+//         Vector3 raycastOrigin = stm.VehicleBound.bounds.center + stm.VehicleBound.bounds.extents.x * stm.transform.forward;
+//         Vector3 raycastDirection = stm.transform.forward; 
 
-        this.stm = stm;
+//         RaycastHit hitInfo;
+//         LayerMask layerMask = LayerMask.GetMask(new string[] {"TrafficIntersection"});
+//         Physics.Raycast(raycastOrigin, raycastDirection, out hitInfo, stm.FrontDetectionRange, layerMask);   
+//         trafficIntersection = hitInfo.collider.GetComponent<TIntersection>();
 
-        laneTrafficState = trafficIntersection.GetLaneTrafficState(stm.ActivePath);
-        laneTrafficState.OnTrafficLightGreen += OnTrafficLightGreen;
-    }
+//         this.stm = stm;
 
-    private void OnTrafficLightGreen() {
-        Debug.Log("Light is green");
-        laneTrafficState.OnTrafficLightGreen -= OnTrafficLightGreen;
-        stm.ChangeState("VehicleMoving");
-        return;
-    }
+//         laneTrafficState = trafficIntersection.GetLaneTrafficState(stm.ActivePath);
+//         laneTrafficState.OnTrafficLightGreen += OnTrafficLightGreen;
 
+//         if (laneTrafficState.currentLight == TLColor.Green) {
+//             OnTrafficLightGreen();
+//             return;
+//         }
 
-    public override void OnExit(VehicleSTM stm)
-    {
-    }
+//         stm.IgnoreTL = false;
+//     }
 
-    public override void OnUpdate(VehicleSTM stm)
-    {
-    }
-}
+//     private void OnTrafficLightGreen() {
+//         laneTrafficState.OnTrafficLightGreen -= OnTrafficLightGreen;
+//         stm.ChangeState("VehicleMoving");
+
+//         stm.IgnoreTL = true;
+//         return;
+//     }
+// }
